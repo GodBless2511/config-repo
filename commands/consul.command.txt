@@ -1,0 +1,25 @@
+# Télécharger le docker image de consul
+docker pull consul
+
+
+# Exécute consul en mode developpement
+docker run -d --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 consul
+
+# Ajouter une instance
+docker run -d -e CONSUL_BIND_INTERFACE=eth0 consul agent -dev -join=localhost
+
+# Affiche la liste des instances serveurs exécutées
+docker exec -t dev-consul consul members
+
+# Créez maintenant un serveur Consul à partir de la dernière image Docker Consul.
+docker run -d --name=dev-consul -p 8500:8500 consul agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0
+
+# Après avoir exécuté la commande et vérifié que le conteneur est en cours d'exécution, accédez à l'URL suivante sur un navigateur :
+ http://ip-docker-machine:8500/
+
+ # se connecter au conteneur de vault
+ $ docker exec -it dev-consul /bin/sh
+
+
+
+spring.config.import=optional:consul:http://localhost:8500, vault://

@@ -1,0 +1,58 @@
+###### gateway-service ######
+# Creer ces cles / valeurs sur consul
+$ creer d'abord le dossier config/
+$ ensuite creer le sous dossier gateway-service/ dans config/
+NB : ces repertoires doient avoir le meme nom que le microservice
+$ et enfin ajouter chacune des cles / valeurs suivantes :
+NB : la cle portera le meme nom que la variable dans le code
+
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+spring.cloud.loadbalancer.ribbon.enabled=false
+
+
+
+Si vous rencontrez des problèmes de connexion sur localhost:8500 sous Debian 12, voici quelques étapes spécifiques pour cette distribution Linux :
+
+Vérifiez le Service Consul :
+Si vous essayez de vous connecter à Consul (généralement utilisé sur le port 8500), assurez-vous que le service Consul est correctement installé
+et en cours d'exécution. Vous pouvez utiliser les commandes suivantes pour vérifier le statut et les informations du service :
+
+sudo systemctl status consul
+
+Vérifiez le Pare-feu :
+Assurez-vous que le pare-feu de Debian 12 autorise les connexions sur le port 8500. Vous pouvez utiliser le pare-feu intégré iptables ou ufw pour
+configurer les règles.
+
+Pour iptables :
+sudo iptables -A INPUT -p tcp --dport 8500 -j ACCEPT
+
+Pour ufw :
+sudo ufw allow 8500
+
+N'oubliez pas de recharger les règles du pare-feu après les avoir modifiées.
+
+Vérifiez l'Adresse IP et le Nom d'Hôte :
+Assurez-vous d'utiliser la bonne adresse IP (127.0.0.1) ou le bon nom d'hôte (localhost). Vous pouvez également essayer d'utiliser l'adresse IPv6 (::1)
+si nécessaire.
+
+Vérifiez le Processus en Cours d'Exécution :
+Utilisez la commande lsof pour vérifier si le processus Consul est en cours d'exécution et écoute sur le port 8500 :
+
+sudo lsof -i :8500
+
+Cela vous donnera des informations sur les processus qui utilisent le port 8500.
+
+Consultez les Journaux :
+Consultez les journaux système (/var/log/syslog) ou les journaux spécifiques à Consul pour obtenir des informations détaillées sur d'éventuelles erreurs ou
+problèmes de connexion.
+
+sudo cat /var/log/syslog | grep consul
+
+Adaptez la commande en fonction du fichier de journal utilisé par votre configuration.
+
+Configuration de Consul :
+Assurez-vous que la configuration de Consul est correcte, en particulier les paramètres liés à l'adresse et au port d'écoute.
+
+En suivant ces étapes, vous devriez être en mesure de résoudre les problèmes de connexion sur localhost:8500 sous Debian 12.
+Assurez-vous également de consulter la documentation spécifique à Consul pour toute configuration ou problème particulier lié à votre environnement.
